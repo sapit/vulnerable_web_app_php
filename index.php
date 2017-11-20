@@ -43,7 +43,7 @@
 
 		$servername_db = "localhost";
 		$username_db = "root";
-		$password_db = "123456";
+		$password_db = "toor";
 
 		// Create connection
 		$conn = mysqli_connect($servername_db, $username_db, $password_db ,'mydb') ;
@@ -51,10 +51,17 @@
     		die('Could not connect: ' . mysql_error());
 		}
 		//SELECT username , location , field FROM Users where username = '' or ''='' and password = '' or ''='' UNION SELECT table_name, column_name, 1 FROM information_schema.columns where ''=''
-		$sql = "SELECT username , location , field FROM Users where username = '$input_user' and password = '$input_pass'";
+		$sql = "SELECT name , location , field FROM Users where name = '$input_user' and password = '$input_pass'";
 		
 		$result = mysqli_query($conn, $sql);
-		echo "<table>"; //begin table tag..
+		if (!$result) {
+			printf("Error: %s\n", mysqli_error($conn));
+			exit();
+		}
+		if($result->num_rows > 0)
+			echo "You have successfully logged in!";
+
+		echo "<table>";
 		while($rowitem = mysqli_fetch_array($result)) {
 			echo "<tr>";
 		    echo "<td>" . $rowitem['username'] . "</td>";
@@ -62,7 +69,7 @@
 		    echo "<td>" . $rowitem['field'] . "</td>";
 		    echo "</tr>";
 		}
-		echo "</table>"; //end table tag
+		echo "</table>";
 	}    
 ?>
 
